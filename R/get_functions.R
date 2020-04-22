@@ -206,7 +206,8 @@ flash_get_p = function(f) {
   return(nrow(f$EF))
 }
 
-# get column variances
+#' @title get column variances
+#' @export
 flash_get_colvar = function(f,S=0){
   return(colMeans(1/f$fit$tau-S^2))
 }
