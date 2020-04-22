@@ -34,6 +34,8 @@ compute_precision = function(R2, data, var_type) {
   }
   else if (var_type == "zero") {
     tau = 1 / data$S^2
+  }else if(var_type == 'by_column+known'){
+    tau = 1 / mle_var_by_column_known(R2,data$S)
   }
 
   if (is.matrix(tau) && data$anyNA) {
@@ -43,7 +45,33 @@ compute_precision = function(R2, data, var_type) {
   return(tau)
 }
 
+# @title estimate sigma^2 x_i\sim N(0,\sigma^2+s_i^2)
+#
+# @param y2 squared x_i
+# @param varx0 known variance s_i^2
+# @return a scalar
+#
+varx_est = function(y2,varx0,bound=c(-1e5,1e5)){
+  normaleqn=function(varx,y2,varx0){
+    return(sum(y2/(varx+varx0)^2)-sum(1/(varx+varx0)))
+  }
+  tt = try(uniroot(normaleqn,bound,y2=y2,varx0=varx0),silent = TRUE)
+  if(class(tt)=='try-error'){
+    return(0)
+  }else{
+    return(pmax(tt$root,0))
+  }
+}
 
+# R2: squared residual matrix
+# S: known standard error matrix
+# return variance matrix
+mle_var_by_column_known = function(R2,S){
+  for(i in 1:ncol(R2)){
+    S[,i] = (S[,i]^2+varx_est(R2[,i],S[,i]^2))
+  }
+  S
+}
 # @title MLE for precision (separate parameter for each column)
 #
 # @param R2 An n by p matrix of squared residuals (with NAs for missing).

@@ -118,16 +118,13 @@ handle_kset = function(kset, f) {
 
 
 handle_var_type = function(var_type, data) {
-  if (!(var_type %in% c("by_column", "by_row", "constant", "zero"))) {
+  if (!(var_type %in% c("by_column", "by_row", "constant", "zero","by_column+known"))) {
     stop("That var_type has not yet been implemented.")
   }
 
   if (var_type == "zero" & is.null(data$S)) {
     stop(paste("Flash data object must include standard errors when",
                "var_type is zero."))
-  }
-  if (!is.null(data$S) & var_type != "zero") {
-    stop("Standard errors are currently only used when var_type is zero.")
   }
 
   return(var_type)

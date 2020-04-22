@@ -98,7 +98,7 @@ flash_greedy_workhorse = function(data,
 
   f = handle_f(f_init, init_null_f = TRUE)
   data = handle_data(data, f)
-  var_type = handle_var_type(match.arg(var_type), data)
+  var_type = handle_var_type(var_type, data)
   init_fn = handle_init_fn(init_fn)
   ebnm_fn = handle_ebnm_fn(ebnm_fn)
   ebnm_param = handle_ebnm_param(ebnm_param, ebnm_fn, Kmax)

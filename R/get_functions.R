@@ -41,9 +41,9 @@ flash_get_fitted_values = function(f) {
 #'
 #'   \item{\code{f}}{A matrix whose columns contain the standardized
 #'     factors (i.e., with norm 1).}
-#' 
+#'
 #' @export
-#' 
+#'
 flash_get_ldf = function(f, kset = NULL, drop_zero_factors = TRUE) {
   f = handle_f(f, allow_null = FALSE)
   kset = handle_kset(kset, f)
@@ -73,9 +73,9 @@ flash_get_ldf = function(f, kset = NULL, drop_zero_factors = TRUE) {
 #'   Factors that have been zeroed out are not counted.
 #'
 #' @inheritParams flash_get_ldf
-#' 
+#'
 #' @export
-#' 
+#'
 flash_get_nfactors = function(f) {
   f = handle_f(f, allow_null = FALSE)
   ldf = flash_get_ldf(f)
@@ -94,9 +94,9 @@ flash_get_nfactors = function(f) {
 #' @inheritParams flash_get_ldf
 #'
 #' @param data Describe this input argument here.
-#' 
+#'
 #' @export
-#' 
+#'
 flash_get_pve = function(data, f, drop_zero_factors = TRUE) {
   f = handle_f(f, allow_null = FALSE)
 
@@ -204,4 +204,9 @@ flash_get_n = function(f) {
 
 flash_get_p = function(f) {
   return(nrow(f$EF))
+}
+
+# get column variances
+flash_get_colvar = function(f,S=0){
+  return(colMeans(1/f$fit$tau-S^2))
 }
